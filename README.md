@@ -1,50 +1,90 @@
-# EduLens v2 — Firebase Connected
+### Teacher Portal (Analyzer + Decision Maker)
+Dashboard (Overview)
+KPIs: Total students, Average score, Attendance %, High-risk count
+AI quick insights: 3–6 bullets like:
+“Class average dropped in Algebra (Unit 3) after Test-2”
+“8 students show low mastery + low attendance — prioritize interventions”
+Students (Performance)
+Subject-wise marks + test history
+Weak vs strong topics per student
+Comparison charts (student vs class avg, trend over time)
+Learning Gaps (Core Feature)
+For each student and for the class:
 
-## 🚀 Setup
+Topic-wise weakness map
+Concept mastery level (e.g., Mastered / Developing / Needs Work)
+AI suggestions (actionable):
+“Struggles in Algebra → Linear equations & factoring”
+“Needs practice in Trigonometry → identities + application problems”
+Recommended next steps: targeted worksheets, re-test suggestions, peer grouping
+Attendance
+Daily/weekly views, patterns (frequent absentees)
+Low attendance alerts (threshold-based + trend-based)
+Risk Detection System
+High / Medium / Low risk classification driven by:
+Marks trend + topic mastery
+Attendance trend
+Assignment submission consistency
+Alerts & Notifications
+Bulk warnings (demo email/message)
+Parent notification (demo workflow)
+Reports & Export
+PDF report cards + class summaries
+Export performance + attendance + risk lists
+### Student Portal (Self-Improvement + Awareness)
+Dashboard
+Score, attendance, overall performance, optional rank
+My Performance
+Score-over-time graph
+Subject breakdown + test analysis
+Learning Gaps (Differentiator)
+Weak topics + why they’re weak (miss patterns)
+Suggested plan: “what to practice next + how much + by when”
+Attendance
+Attendance %, missed classes list, warning if low
+Assignments
+Pending, submitted, late, completion %
+Feedback + AI Assistant
+Teacher remarks
+Personalized AI feedback:
+“Focus on Algebra Unit 2; do 20 mixed problems/day”
+“You’re improving in Geometry; keep momentum with weekly quizzes”
+### The “Learning Gap + Risk” engine (simple but judge-friendly)
+Mastery scoring (per topic)
+Compute a topic mastery score (0–100) using:
 
-```bash
-npm install
-npm run dev
-```
+Correctness on questions tagged to that topic
+Recency weighting (recent tests matter more)
+Penalty for repeated misconception patterns (same error type)
+Then map to labels:
 
-## 🔥 Firebase Setup (Required)
+80–100: Mastered
+55–79: Developing
+0–54: Needs Work
+Risk scoring (per student)
+A weighted score such as:
 
-1. Go to your [Firebase Console](https://console.firebase.google.com/project/edulens-544ff)
-2. Enable **Authentication → Email/Password**
-3. Enable **Firestore Database** (start in test mode)
-4. Deploy Firestore rules: `firebase deploy --only firestore:rules`
+Marks trend (40%)
+Attendance (35%)
+Assignments (25%)
+Then classify:
 
-## 👤 Demo Accounts
+High risk: ≥ 70
+Medium: 40–69
+Low: < 40
+AI outputs (what the LLM should generate)
+Teacher insight: “Who is at risk, why, and what to do next”
+Student direction: “What to practice next + realistic plan”
+### Clean tab structure (matches your UI)
+Teacher tabs
+Dashboard, Students, Learning Gaps, Attendance, Alerts, Reports, AI Assistant
+Student tabs
+Dashboard, My Performance, Learning Gaps, Attendance, Assignments, Feedback, AI Assistant
+### If you want, I can implement this next
+I can turn this into a working Next.js app with:
 
-Login as **Admin/Teacher** first and click **"Seed Demo Data"** on the dashboard. This will:
-- Create 12 student records in Firestore
-- Generate 7 days of attendance data
-- Add 8 assignments per student
-- Auto-generate risk alerts
-
-Then use these demo accounts:
-
-| Role    | Email                   | Password   |
-|---------|-------------------------|------------|
-| Admin   | admin@edulens.com       | admin123   |
-| Teacher | teacher@edulens.com     | teach123   |
-| Student | student@edulens.com     | student123 |
-
-## 🗂 Firestore Collections
-
-| Collection       | Description                         |
-|-----------------|-------------------------------------|
-| `users`         | User profiles (role, displayName)   |
-| `students`      | Student records with full data      |
-| `attendance`    | Per-student per-day attendance      |
-| `assignments`   | Student assignments                 |
-| `alerts`        | Auto-generated risk alerts          |
-| `questionPapers`| Uploaded question papers            |
-| `answerSheets`  | Graded answer sheets                |
-
-## ⚡ Features
-
-- **Real-time sync** — all data updates live via Firestore `onSnapshot`
-- **Firebase Auth** — login, signup, role-based access
-- **Seed Data** — one-click demo data seeding from the teacher dashboard
-- **Security Rules** — teachers write, students read their own data
+Teacher/Student role-based login
+Seed dataset (students, tests, topic tags, attendance, assignments)
+Learning-gap + risk scoring
+AI chat + AI “quick insights”
+PDF export (reports)
